@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">SaberMais</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+@model List<Projeto_SABERMAIS.Models.Pergunta>
+@{
+    ViewData["Title"] = "Aula";
+}
+
+<h2>Aula 1</h2>
+<div class="video-container">
+    <video width="600" controls>
+        <source src="/videos/aula1.mp4" type="video/mp4">
+    </video>
+</div>
+
+<h3>Perguntas</h3>
+
+<form asp-action="CriarPergunta" method="post">
+    <input type="hidden" name="aulaId" value="@ViewBag.AulaId" />
+    <input type="text" name="autor" placeholder="Seu nome" required />
+    <textarea name="conteudo" placeholder="Digite sua pergunta..." required></textarea>
+    <button type="submit">Enviar Pergunta</button>
+</form>
+
+<hr />
+
+@foreach (var pergunta in Model)
+{
+    <div class="pergunta">
+        <p><strong>@pergunta.Autor:</strong> @pergunta.Conteudo</p>
+        <small>@pergunta.DataCriacao.ToShortDateString()</small>
+
+        <div class="respostas">
+            @foreach (var resposta in pergunta.Respostas)
+            {
+                <p style="margin-left:20px;"><strong>@resposta.Autor:</strong> @resposta.Conteudo</p>
+            }
+
+            <form asp-action="CriarResposta" method="post">
+                <input type="hidden" name="perguntaId" value="@pergunta.Id" />
+                <input type="text" name="autor" placeholder="Seu nome" required />
+                <textarea name="conteudo" placeholder="Responder..." required></textarea>
+                <button type="submit">Enviar Resposta</button>
+            </form>
+        </div>
+    </div>
+    <hr />
+}
